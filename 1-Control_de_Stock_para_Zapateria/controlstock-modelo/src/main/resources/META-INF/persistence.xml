@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Persistence deployment descriptor for dev profile -->
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" 
+             version="1.0">
+             
+   <persistence-unit name="controlstockPersistenceUnit">
+      <provider>org.hibernate.ejb.HibernatePersistence</provider>
+      <jta-data-source>java:/controlstockDatasource</jta-data-source>
+      
+      	<class>ar.com.pitasi.zapateria.controlstock.modelo.seguridad.PerfilUsuario</class>
+      	<class>ar.com.pitasi.zapateria.controlstock.modelo.seguridad.Usuario</class>
+      
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.Articulo</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.Compra</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.Precio</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.Proveedor</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.Tarea</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.TipoPago</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.Venta</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.RelacionCompraCodigoUnico</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.Color</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.TipoVenta</class>
+		<class>ar.com.pitasi.zapateria.controlstock.modelo.AsignacionTipoVentaTipoPago</class>
+		
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+      <properties>
+         <property name="hibernate.dialect" value="${hibernate.dialect}" />
+         <property name="hibernate.hbm2ddl.auto" value="update"/>
+         <property name="hibernate.format_sql" value="true"/>
+		 <property name="hibernate.show_sql" value="${hibernate.show_sql}" />
+         <property name="jboss.entity.manager.factory.jndi.name" value="java:/controlstockEntityManagerFactory"/>
+         <property name="hibernate.default_catalog" value="controlstock"/>
+         <property name="hibernate.cache.use_query_cache" value="true"/>
+      </properties>
+   </persistence-unit>
+
+    
+</persistence>
