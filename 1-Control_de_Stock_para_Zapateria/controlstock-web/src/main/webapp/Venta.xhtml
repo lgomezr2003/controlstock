@@ -1,0 +1,132 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form>
+
+			<rich:panel>
+				<f:facet name="header">Venta</f:facet>
+
+				<h:panelGrid>
+					<s:decorate id="fecha" template="layout/display.xhtml">
+						<ui:define name="label">Fecha</ui:define>
+						<h:outputText value="#{ventaHome.instance.fecha}">
+							<s:convertDateTime type="both" dateStyle="short"
+								pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</s:decorate>
+
+					<s:decorate id="tipoVenta" template="layout/display.xhtml">
+						<ui:define name="label">Tipo de venta</ui:define>
+						<h:outputText value="#{ventaHome.instance.tipoVenta.descripcion}">
+						</h:outputText>
+					</s:decorate>
+					<rich:panel
+						rendered="#{ ventaHome.instance.codigoDeLaVentaQueCambio != null}">
+
+						<h:outputText value="Este articulo se vendio como cambio de: " />
+						<h:outputText
+							value="#{ ventaHome.instance.codigoDeLaVentaQueCambio}" />
+
+					</rich:panel>
+
+					<rich:panel
+						rendered="#{ ventaHome.instance.tipoVenta != null and not ventaHome.instance.tipoVenta.aceptaCambios }">
+
+						<h:outputText
+							value="Este articulo no acepta cambios por ser del tipo:  " />
+						<h:outputText value="#{ ventaHome.instance.tipoVenta.descripcion}" />
+
+					</rich:panel>
+
+					<s:decorate id="descuento" template="layout/display.xhtml">
+						<ui:define name="label">Descuento</ui:define>
+						<h:outputText value="#{ventaHome.instance.descuento} %">
+						</h:outputText>
+					</s:decorate>
+
+					<s:decorate id="tipopago" template="layout/display.xhtml">
+						<ui:define name="label">Tipo de pago</ui:define>
+						<h:outputText
+							value="#{ventaHome.instance.tipoPago.sigla} - #{ventaHome.instance.tipoPago.descripcion}">
+						</h:outputText>
+					</s:decorate>
+
+					<s:decorate id="recargo" template="layout/display.xhtml">
+						<ui:define name="label">Recargo</ui:define>
+						<h:outputText value="#{ventaHome.instance.tipoPago.recargo} %">
+						</h:outputText>
+					</s:decorate>
+
+					<s:decorate id="precioDeVenta" template="layout/display.xhtml">
+						<ui:define name="label">Precio de venta establecido</ui:define>
+						<h:outputText value="$ #{ventaHome.instance.compra.precioDeVenta}" />
+					</s:decorate>
+
+					<s:decorate id="precioDeVentaModificado"
+						template="layout/display.xhtml">
+						<ui:define name="label">Precio al que se vendio (no incluye recargo)</ui:define>
+						<h:outputText value="$ #{ventaHome.instance.precioDeVenta}" />
+					</s:decorate>
+				</h:panelGrid>
+
+				<div style="height: 8px" />
+
+				<h:panelGrid>
+
+					<h3>Detalles del Articulo</h3>
+
+					<s:decorate id="codigoArticulo" template="layout/display.xhtml">
+						<ui:define name="label">Codigo</ui:define>
+						<h:outputText
+							value="#{formateadorDeCodigos.formatearCodigo(ventaHome.instance.compra.articulo.codigoArticulo,5)}" />
+					</s:decorate>
+
+					<s:decorate id="tipoArticulo" template="layout/display.xhtml">
+						<ui:define name="label">Tipo</ui:define>
+						<h:outputText
+							value="#{ventaHome.instance.compra.articulo.tipoArticulo}" />
+					</s:decorate>
+
+					<s:decorate id="descripcionArticulo"
+						template="layout/display.xhtml">
+						<ui:define name="label">Descripcion</ui:define>
+						<h:outputText
+							value="#{ventaHome.instance.compra.articulo.descripcion}" />
+					</s:decorate>
+
+					<s:decorate id="numeroArticulo" template="layout/display.xhtml">
+						<ui:define name="label">Numero</ui:define>
+						<h:outputText value="#{ventaHome.instance.compra.numero}" />
+					</s:decorate>
+
+					<s:decorate id="colorArticulo" template="layout/display.xhtml"
+						rendered="#{ventaHome.instance.compra.color != null}">
+						<ui:define name="label">Color</ui:define>
+						<h:outputText value="#{ventaHome.instance.compra.color.nombre}" />
+					</s:decorate>
+
+				</h:panelGrid>
+				<div style="clear: both" />
+
+			</rich:panel>
+
+			<div class="actionButtons"><s:button view="/VentaEdit.xhtml"
+				id="edit" value="Editar" rendered="false" /> <s:button
+				view="/#{empty ventaFrom ? 'VentaList' : ventaFrom}.xhtml" id="done"
+				value="Aceptar" /> <h:commandButton
+				rendered="#{cargaCambio.codigoAValidar != null and ventaHome.instance.tipoVenta != null and ventaHome.instance.tipoVenta.aceptaCambios}"
+				action="/ConfirmarCambio.xhtml" id="cambiar"
+				value="Cambiar Articulo" /></div>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

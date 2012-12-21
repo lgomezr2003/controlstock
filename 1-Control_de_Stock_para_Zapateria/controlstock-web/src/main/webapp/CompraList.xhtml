@@ -1,0 +1,219 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" 
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="compraSearch" styleClass="edit">
+
+			<rich:simpleTogglePanel label="Filtros de Busqueda" switchType="ajax">
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Fecha de compra</ui:define>
+					<rich:calendar id="fecha" value="#{compraList.compra.fecha}"
+						enableManualInput="true" datePattern="dd/MM/yyyy">
+					</rich:calendar>
+					<ui:param name="fechaDeCompra" value="#{compraList.compra.fecha}" />
+				</s:decorate>
+
+				<s:decorate id="condicionField" template="layout/edit.xhtml">
+					<ui:define name="label">Estado</ui:define>
+					<h:selectOneMenu value="#{compraList.condicionSeleccionada}">
+						<f:selectItems value="#{compraList.itemsCondicion}" />
+					</h:selectOneMenu>
+				</s:decorate>
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Codigo del articulo</ui:define>
+					<h:inputText
+						value="#{compraList.compra.articulo.codigoArticulo}" />
+				</s:decorate>
+			</rich:simpleTogglePanel>
+
+			<div class="actionButtons"><h:commandButton id="search"
+				value="Buscar" action="/CompraList.xhtml" /> <s:button id="reset"
+				value="Limpiar Busqueda" includePageParams="false" /></div>
+
+			<rich:panel>
+				<f:facet name="header">Resultados </f:facet>
+				<div class="results" id="compraList"><h:outputText
+					value="No hay resultados que coincidan con la busqueda"
+					rendered="#{empty compraList.resultList}" />
+				<div align="right"><h:commandLink value="Seleccionar todo"
+					rendered="#{generadorDeEtiquetas.seleccionandoCompras}"
+					action="#{generadorDeEtiquetas.seleccionarTodo(compraList.resultList)}" /></div>
+				<s:div style="height:15px" /> <rich:dataTable id="compraList"
+					var="_compra" value="#{compraList.resultList}"
+					onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+					onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+					rendered="#{not empty compraList.resultList}">
+					<rich:column
+						style="#{generadorDeEtiquetas.estaSeleccionada(_compra)? 'background-color:#F1F1F1' : '' }">
+						<f:facet name="header">
+							<ui:include src="layout/sort.xhtml">
+								<ui:param name="entityList" value="#{compraList}" />
+								<ui:param name="propertyLabel" value="Fecha" />
+								<ui:param name="propertyPath" value="compra.fecha" />
+							</ui:include>
+						</f:facet>
+						<h:outputText value="#{_compra.fecha}">
+							<s:convertDateTime type="both" dateStyle="short"
+								pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</rich:column>
+					<rich:column
+						style="#{generadorDeEtiquetas.estaSeleccionada(_compra)? 'background-color:#F1F1F1' : '' }">
+						<f:facet name="header">
+							<ui:include src="layout/sort.xhtml">
+								<ui:param name="entityList" value="#{compraList}" />
+								<ui:param name="propertyLabel" value="Codigo de compra" />
+								<ui:param name="propertyPath" value="compra.codigoCompra" />
+							</ui:include>
+						</f:facet>
+						<h:outputText value="#{formateadorDeCodigos.formatearCodigo(_compra.codigoCompra,3)}" />
+					</rich:column>
+					<rich:column
+						style="#{generadorDeEtiquetas.estaSeleccionada(_compra)? 'background-color:#F1F1F1' : '' }">
+						<f:facet name="header">
+							<ui:include src="layout/sort.xhtml">
+								<ui:param name="entityList" value="#{compraList}" />
+								<ui:param name="propertyLabel" value="Articulo" />
+								<ui:param name="propertyPath"
+									value="compra.articulo.codigoArticulo" />
+							</ui:include>
+						</f:facet>
+						<h:outputText
+							value="#{formateadorDeCodigos.formatearCodigo(_compra.articulo.codigoArticulo,5)}" />
+					</rich:column>
+					<rich:column
+						style="#{generadorDeEtiquetas.estaSeleccionada(_compra)? 'background-color:#F1F1F1' : '' }">
+						<f:facet name="header">
+							<ui:include src="layout/sort.xhtml">
+								<ui:param name="entityList" value="#{compraList}" />
+								<ui:param name="propertyLabel" value="Descripcion" />
+								<ui:param name="propertyPath"
+									value="compra.articulo.descripcion" />
+							</ui:include>
+						</f:facet>
+						<h:outputText value="#{_compra.articulo.descripcion}" />
+					</rich:column>
+					<rich:column
+						style="#{generadorDeEtiquetas.estaSeleccionada(_compra)? 'background-color:#F1F1F1' : '' }">
+						<f:facet name="header">
+							<ui:include src="layout/sort.xhtml">
+								<ui:param name="entityList" value="#{compraList}" />
+								<ui:param name="propertyLabel" value="Color" />
+								<ui:param name="propertyPath"
+									value="compra.color.nombre" />
+							</ui:include>
+						</f:facet>
+						<h:outputText value="#{_compra.color.nombre}" />
+					</rich:column>
+					<rich:column
+						style="#{generadorDeEtiquetas.estaSeleccionada(_compra)? 'background-color:#F1F1F1' : '' }">
+						<f:facet name="header">
+							<ui:include src="layout/sort.xhtml">
+								<ui:param name="entityList" value="#{compraList}" />
+								<ui:param name="propertyLabel" value="Numero" />
+								<ui:param name="propertyPath" value="compra.numero" />
+							</ui:include>
+						</f:facet>
+						<h:outputText value="#{_compra.numero}" />
+					</rich:column>
+					<rich:column
+						style="#{generadorDeEtiquetas.estaSeleccionada(_compra)? 'background-color:#F1F1F1' : '' }">
+						<f:facet name="header">
+							<ui:include src="layout/sort.xhtml">
+								<ui:param name="entityList" value="#{compraList}" />
+								<ui:param name="propertyLabel" value="Proveedor" />
+								<ui:param name="propertyPath"
+									value="compra.articulo.proveedor.codigoFabricante" />
+							</ui:include>
+						</f:facet>
+						<h:outputText
+							value="#{_compra.articulo.proveedor.codigoFabricante}" />
+					</rich:column>
+					<rich:column
+						style="#{generadorDeEtiquetas.estaSeleccionada(_compra)? 'background-color:#F1F1F1' : '' }">
+						<f:facet name="header">
+							<ui:include src="layout/sort.xhtml">
+								<ui:param name="entityList" value="#{compraList}" />
+								<ui:param name="propertyLabel" value="Nombre" />
+								<ui:param name="propertyPath"
+									value="compra.articulo.proveedor.nombre" />
+							</ui:include>
+						</f:facet>
+						<h:outputText value="#{_compra.articulo.proveedor.nombre}" />
+					</rich:column>
+					<rich:column styleClass="action"
+						style="#{generadorDeEtiquetas.estaSeleccionada(_compra)? 'background-color:#F1F1F1' : '' }"
+						rendered="#{generadorDeEtiquetas.seleccionandoCompras}">
+						<f:facet name="header">Accion</f:facet>
+						<h:commandLink value="Seleccionar"
+							rendered="#{not generadorDeEtiquetas.estaSeleccionada(_compra)}"
+							action="#{generadorDeEtiquetas.seleccionarCompraParaImpresion(_compra)}">
+						</h:commandLink>
+
+						<h:commandLink value="Anular Seleccion"
+							rendered="#{generadorDeEtiquetas.estaSeleccionada(_compra)}"
+							action="#{generadorDeEtiquetas.deseleccionarCompraParaImpresion(_compra)}">
+						</h:commandLink>
+					</rich:column>
+
+					<rich:column styleClass="action"
+						rendered="#{not generadorDeEtiquetas.seleccionandoCompras}">
+						<f:facet name="header">Accion</f:facet>
+
+						<h:outputLink id="infoLink" value="InfoCompra.seam"
+							onclick="return GB_showCenter('Ver compra', this.href,  480, 400)">
+            			Ver
+            			
+						<f:param name="compraIdCompra" value="#{_compra.idCompra}" />
+						</h:outputLink>
+
+					</rich:column>
+				</rich:dataTable></div>
+
+				<s:div style="height: 8px" />
+
+				<div class="tableControl"><s:link view="/CompraList.xhtml"
+					rendered="#{compraList.previousExists}"
+					value="#{messages.left}#{messages.left} Primera pagina"
+					id="firstPage">
+					<f:param name="firstResult" value="0" />
+				</s:link> <s:link view="/CompraList.xhtml"
+					rendered="#{compraList.previousExists}"
+					value="#{messages.left} Pagina anterior" id="previousPage">
+					<f:param name="firstResult"
+						value="#{compraList.previousFirstResult}" />
+				</s:link> <s:link view="/CompraList.xhtml"
+					rendered="#{compraList.nextExists}"
+					value="Pagina siguiente #{messages.right}" id="nextPage">
+					<f:param name="firstResult" value="#{compraList.nextFirstResult}" />
+				</s:link> <s:link view="/CompraList.xhtml"
+					rendered="#{compraList.nextExists}"
+					value="Ultima pagina #{messages.right}#{messages.right}"
+					id="lastPage">
+					<f:param name="firstResult" value="#{compraList.lastFirstResult}" />
+				</s:link></div>
+
+			</rich:panel>
+
+			<div><h:commandButton value="Generar etiquetas para cambio"
+				action="#{generadorDeEtiquetas.comenzarSeleccion()}"
+				rendered="#{not generadorDeEtiquetas.seleccionandoCompras}" /> <h:commandButton
+				value="Cancelar"
+				rendered="#{generadorDeEtiquetas.seleccionandoCompras}" /> <h:commandButton
+				value="Generar etiquetas"
+				action="#{generadorDeEtiquetas.generarEtiquetas()}"
+				rendered="#{generadorDeEtiquetas.seleccionandoCompras}" /></div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

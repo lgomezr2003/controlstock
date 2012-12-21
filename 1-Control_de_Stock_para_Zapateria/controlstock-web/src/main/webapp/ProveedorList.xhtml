@@ -1,0 +1,134 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="proveedorSearch" styleClass="edit">
+
+			<rich:simpleTogglePanel label="Filtros de Busqueda" switchType="ajax">
+
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Codigo</ui:define>
+					<h:inputText id="nombre"
+						value="#{proveedorList.proveedor.codigoFabricante}" size="4" />
+				</s:decorate>
+
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Nombre</ui:define>
+					<h:inputText id="nombre" value="#{proveedorList.proveedor.nombre}"
+						size="60" />
+				</s:decorate>
+
+			</rich:simpleTogglePanel>
+
+			<div class="actionButtons"><h:commandButton id="search"
+				value="Buscar" action="/ProveedorList.xhtml" /> <s:button
+				id="reset" value="Limpiar Busqueda" includePageParams="false" /></div>
+
+		</h:form>
+
+		<rich:panel>
+			<f:facet name="header">Resultados</f:facet>
+			<div class="results" id="proveedorList"><h:outputText
+				value="No hay Proveedores que coincidan con la busqueda"
+				rendered="#{empty proveedorList.resultList}" /> <rich:dataTable
+				id="proveedorList" var="_proveedor"
+				onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+				onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+				value="#{proveedorList.resultList}"
+				rendered="#{not empty proveedorList.resultList}">
+
+				<h:column>
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{proveedorList}" />
+							<ui:param name="propertyLabel" value="Codigo del fabricante" />
+							<ui:param name="propertyPath" value="proveedor.codigoFabricante" />
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_proveedor.codigoFabricante}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{proveedorList}" />
+							<ui:param name="propertyLabel" value="Nombre" />
+							<ui:param name="propertyPath" value="proveedor.nombre" />
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_proveedor.nombre}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{proveedorList}" />
+							<ui:param name="propertyLabel" value="Direccion" />
+							<ui:param name="propertyPath" value="proveedor.direccion" />
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_proveedor.direccion}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<ui:include src="layout/sort.xhtml">
+							<ui:param name="entityList" value="#{proveedorList}" />
+							<ui:param name="propertyLabel" value="Telefono" />
+							<ui:param name="propertyPath" value="proveedor.telefono" />
+						</ui:include>
+					</f:facet>
+					<h:outputText value="#{_proveedor.telefono}" />
+				</h:column>
+				<rich:column styleClass="action">
+					<f:facet name="header">Accion</f:facet>
+					<s:link view="/#{empty from ? 'Proveedor' : from}.xhtml"
+						value="#{empty from ? '' : 'Seleccionar'}"
+						propagation="#{empty from ? 'none' : 'default'}"
+						id="proveedorViewId">
+						<f:param name="proveedorIdProveedor"
+							value="#{_proveedor.idProveedor}" />
+					</s:link>
+            #{' '}
+            <s:link view="/ProveedorEdit.xhtml" value="Editar"
+						propagation="none" id="proveedorEdit" rendered="#{empty from}">
+						<f:param name="proveedorIdProveedor"
+							value="#{_proveedor.idProveedor}" />
+					</s:link>
+				</rich:column>
+			</rich:dataTable></div>
+			<div class="tableControl"><s:link view="/ProveedorList.xhtml"
+				rendered="#{proveedorList.previousExists}"
+				value="#{messages.left}#{messages.left} Primera Pagina" id="firstPage">
+				<f:param name="firstResult" value="0" />
+			</s:link> <s:link view="/ProveedorList.xhtml"
+				rendered="#{proveedorList.previousExists}"
+				value="#{messages.left} Pagina Anterior" id="previousPage">
+				<f:param name="firstResult"
+					value="#{proveedorList.previousFirstResult}" />
+			</s:link> <s:link view="/ProveedorList.xhtml"
+				rendered="#{proveedorList.nextExists}"
+				value="Proxima Pagina #{messages.right}" id="nextPage">
+				<f:param name="firstResult" value="#{proveedorList.nextFirstResult}" />
+			</s:link> <s:link view="/ProveedorList.xhtml"
+				rendered="#{proveedorList.nextExists}"
+				value="Ultima Pagina #{messages.right}#{messages.right}" id="lastPage">
+				<f:param name="firstResult" value="#{proveedorList.lastFirstResult}" />
+			</s:link></div>
+		</rich:panel>
+
+
+		<s:div styleClass="actionButtons" rendered="#{empty from}">
+			<s:button view="/ProveedorEdit.xhtml" id="create" propagation="none"
+				value="Crear Proveedores">
+				<f:param name="proveedorIdProveedor" />
+			</s:button>
+		</s:div>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,70 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<rich:panel>
+			<f:facet name="header">Tipo de Venta</f:facet>
+
+			<s:decorate id="descripcion" template="layout/display.xhtml">
+				<ui:define name="label">Descripcion</ui:define>
+				<h:outputText value="#{tipoVentaHome.instance.descripcion}" />
+			</s:decorate>
+
+			<s:decorate id="descuento" template="layout/display.xhtml">
+				<ui:define name="label">Descuento</ui:define>
+				<h:outputText
+					value="#{tipoVentaHome.instance.porcentajeDescuento} %" />
+			</s:decorate>
+
+			<s:decorate id="minimo" template="layout/edit.xhtml">
+				<ui:define name="label">Cantidad minima de articulos a vender</ui:define>
+				<h:outputText
+					value="#{tipoVentaHome.instance.minimoDeArticulosVendidos}">
+				</h:outputText>
+			</s:decorate>
+
+			<s:decorate id="aceptaCambios" template="layout/display.xhtml">
+				<ui:define name="label">Acepta cambios?</ui:define>
+				<h:outputText
+					value="#{tipoVentaHome.instance.aceptaCambios? 'Si': 'No'}" />
+			</s:decorate>
+
+			<s:decorate id="tiposDePago" template="layout/display.xhtml">
+				<ui:define name="label">Tipos de pago aceptados</ui:define>
+
+				<s:div style="height: 8px" />
+
+				<rich:dataTable
+					value="#{tipoPagoHome.getTiposDePagoParaTipoDeVenta(tipoVentaHome.instance.idTipoVenta)}"
+					var="_tipoPago">
+
+					<h:column>
+						<f:facet name="header">
+							Descripcion
+						</f:facet>
+						<h:outputText value="#{_tipoPago.descripcion}" />
+					</h:column>
+
+				</rich:dataTable>
+
+			</s:decorate>
+
+			<div style="clear: both" />
+
+		</rich:panel>
+
+		<div class="actionButtons"><s:button view="/TipoVentaEdit.xhtml"
+			id="edit" value="Editar" rendered="false"/> <s:button
+			view="/#{empty tipoVentaFrom ? 'TipoVentaList' : tipoVentaFrom}.xhtml"
+			id="done" value="Aceptar" /></div>
+
+	</ui:define>
+
+</ui:composition>

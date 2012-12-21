@@ -1,0 +1,74 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<rich:panel style="padding:0" headerClass="outpanelHeader">
+		<f:facet name="header">
+			<rich:spacer height="4" />
+		</f:facet>
+		<h3 align="center"><h:outputText value="Costos Unitarios en pesos" /></h3>
+
+		<rich:dataTable width="400">
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.precioUnitario1}" />
+				</f:facet>
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.precioUnitario2}" />
+				</f:facet>
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.precioUnitario3}" />
+				</f:facet>
+
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.precioUnitario4}" />
+				</f:facet>
+
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.precioUnitario5}" />
+				</f:facet>
+
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.precioUnitario6}" />
+				</f:facet>
+
+			</rich:column>
+
+			<rich:column rendered="#{articuloHome.instance.tipoArticulo == 'CALZADO_NINIO'}">
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.precioUnitario7}" />
+				</f:facet>
+
+			</rich:column>
+
+			<rich:column rendered="#{articuloHome.instance.tipoArticulo == 'CALZADO_NINIO'}">
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.precioUnitario8}"/>
+				</f:facet>
+
+			</rich:column>
+
+		</rich:dataTable>
+	</rich:panel>
+</ui:composition>

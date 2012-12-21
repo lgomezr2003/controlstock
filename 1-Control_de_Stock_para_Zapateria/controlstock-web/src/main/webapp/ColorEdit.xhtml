@@ -1,0 +1,71 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<script>
+			function Confirmar(params) {
+
+		    	this.mensaje = params.mensaje;
+		    
+		    	this.ejecutar = function() {
+		
+		        	return confirm(this.mensaje);
+			    }
+			}
+		
+			var confirmarBorrarColor = new Confirmar( {	mensaje : "Esta seguro que desea borrar este Color?" });
+		
+		</script>
+
+		<h:form id="color" styleClass="edit">
+
+			<rich:panel>
+				<f:facet name="header">#{colorHome.managed ? 'Editar' : 'Agregar'} Color</f:facet>
+
+				<s:decorate id="codigoColorField" template="layout/edit.xhtml">
+					<ui:define name="label">Codigo</ui:define>
+					<h:inputText id="codigo" size="4" maxlength="4"
+						readonly="true" value="#{colorHome.instance.codigoColor}">
+						<a:support event="onblur" reRender="codigoColorField"
+							bypassUpdates="true" ajaxSingle="true" />
+					</h:inputText>
+				</s:decorate>
+
+
+				<s:decorate id="nombreField" template="layout/edit.xhtml">
+					<ui:define name="label">Nombre</ui:define>
+					<h:inputText id="direccion" size="60" required="true"
+						value="#{colorHome.instance.nombre}" />
+				</s:decorate>
+
+				<div style="clear: both"><span class="required">*</span>
+				requerido</div>
+
+			</rich:panel>
+
+			<div class="actionButtons"><h:commandButton id="save"
+				value="Guardar" action="#{colorHome.persist}"
+				disabled="#{!colorHome.wired}"
+				rendered="#{!colorHome.managed}" /> <h:commandButton id="update"
+				value="Guardar" action="#{colorHome.update}"
+				rendered="#{colorHome.managed}" /> <h:commandButton id="delete" onclick="return confirmarBorrarColor.ejecutar();"
+				value="Borrar" action="#{colorHome.remove}" immediate="true"
+				rendered="#{colorHome.managed}" /> <s:button id="cancelEdit"
+				value="Cancelar" propagation="end" view="/ColorList.xhtml"
+				rendered="#{colorHome.managed}" /> <s:button id="cancelAdd"
+				value="Cancelar" propagation="end"
+				view="/#{empty colorFrom ? 'ColorList' : colorFrom}.xhtml"
+				rendered="#{!colorHome.managed}" /></div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

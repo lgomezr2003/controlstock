@@ -1,0 +1,134 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<script>
+			function Confirmar(params) {
+
+		    	this.mensaje = params.mensaje;
+		    
+		    	this.ejecutar = function() {
+		
+		        	return confirm(this.mensaje);
+			    }
+			}
+		
+			var confirmarBorrarVenta = new Confirmar( {	mensaje : "Esta seguro que desea remover esta venta?" });
+		
+		</script>
+
+		<h:form id="venta" styleClass="edit">
+			<a:outputPanel id="sugerencias">
+				<rich:panel>
+					<f:facet name="header">Acerca del tipo de venta</f:facet>
+					<h:outputText rendered="#{not cargaVenta.esCompatibleConTipoDeVenta() }"
+						value="ADVERTENCIA: El tipo de venta elegido (#{cargaVenta.tipoVentaSeleccionado.descripcion}) no aplica a la cantidad de articulos a vender.
+									 Se estan vendiendo #{cargaVenta.ventasACargar.size} articulos y el minimo es #{cargaVenta.tipoVentaSeleccionado.minimoDeArticulosVendidos} articulos."
+						style="FONT-WEIGHT: bold; COLOR: #ff0000;"></h:outputText>
+	
+					<s:div style="height: 8px" />
+	
+					<h:outputText value="Otros tipos de venta aplicables: " style="FONT-WEIGHT: bold;"></h:outputText>
+	
+					<h:outputText value="No hay sugerencias que mostrar"
+						 rendered="#{empty tipoVentaHome.getItemsParaTipoVentaSugeridos(cargaVenta.ventasACargar.size)}" />
+	
+					<s:div style="height: 8px" />
+	
+					<h:selectOneRadio value="#{cargaVenta.idTipoVentaSugeridoSeleccionado}" 
+						rendered="#{not empty tipoVentaHome.getItemsParaTipoVentaSugeridos(cargaVenta.ventasACargar.size)}">
+						<f:selectItems value="#{tipoVentaHome.getItemsParaTipoVentaSugeridos(cargaVenta.ventasACargar.size)}" />
+						<a:support event="onchange" ajaxSingle="true" reRender="confirmeVentasPanel,sugerencias"></a:support>
+					</h:selectOneRadio>
+	
+				</rich:panel>
+			</a:outputPanel>
+
+			<s:div style="height: 8px" />
+			<a:outputPanel id="confirmeVentasPanel">
+				<rich:panel style="height: 400px">
+					<f:facet name="header">Confirme las ventas cargadas</f:facet>
+	
+					<s:div style="height: 8px" />
+	
+					<h:panelGrid rendered="#{not empty cargaVenta.ventasACargar}">
+						<rich:dataTable id="ventasCargadas" var="_venta"
+							value="#{cargaVenta.ventasACargar}">
+	
+							<rich:column>
+								<f:facet name="header">Articulo</f:facet>
+								<h:outputText value="#{_venta.compra.articulo.descripcion}" />
+							</rich:column>
+	
+							<rich:column>
+								<f:facet name="header">Precio</f:facet>
+								<h:outputText
+									value="#{cargaVenta.obtenerPrecioCalculadoParaVenta(_venta)}" />
+							</rich:column>
+	
+							<rich:column>
+								<f:facet name="header">Accion</f:facet>
+								<h:commandLink value="Remover"
+									onclick="return confirmarBorrarVenta.ejecutar();"
+									action="#{cargaVenta.removerVenta(_venta)}" />
+							</rich:column>
+	
+						</rich:dataTable>
+	
+						<s:div style="height:8px" />
+						
+						<s:decorate id="tipoVentaField" template="layout/edit.xhtml">
+								<ui:define name="label">Tipo de Venta seleccionado</ui:define>
+								<h:outputText value="#{cargaVenta.tipoVentaSeleccionado.descripcion}"></h:outputText>
+						</s:decorate>
+	
+						<s:decorate id="tipoPagoField" template="layout/edit.xhtml">
+								<ui:define name="label">Tipo de Pago</ui:define>
+								<h:selectOneMenu value="#{tipoPagoHome.tipoPagoIdTipoPago}">
+									<f:selectItems
+										value="#{tipoPagoHome.getItemsParaTipoPagoParaTipoDeVenta(cargaVenta.tipoVentaSeleccionado.idTipoVenta)}" />
+									<a:support event="onchange"
+										action="#{cargaVenta.asignarTipoDePago()}"
+										reRender="valoresVariables"></a:support>
+								</h:selectOneMenu>
+						</s:decorate>
+	
+							<s:div style="height: 8px" />
+	
+							<h:panelGrid id="valoresVariables">
+								<s:decorate id="recargoField" template="layout/edit.xhtml">
+									<ui:define name="label">Recargo</ui:define>
+									<h:outputText value="#{tipoPagoHome.instance.recargo} %"></h:outputText>
+								</s:decorate>
+	
+								<s:div style="height:8px;" />
+	
+								<rich:panel>
+									<h:outputText value="Total: $ #{cargaVenta.getTotal()}"
+										style="BACKGROUND-COLOR: #e8f2f9; FONT-WEIGHT: bold;"></h:outputText>
+								</rich:panel>
+							</h:panelGrid>
+	
+					</h:panelGrid>
+	
+				</rich:panel>
+			</a:outputPanel>
+			
+
+			<div class="actionButtons"><h:commandButton id="save"
+				value="Confirmar" action="#{cargaVenta.persistirTodasLasVentas()}" />
+			<h:commandButton id="otra" value="Cargar otra venta"
+				action="#{cargaVenta.cargarOtraVenta()}" /></div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

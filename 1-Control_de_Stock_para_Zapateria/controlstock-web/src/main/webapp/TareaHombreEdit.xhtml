@@ -1,0 +1,202 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<a:outputPanel layout="block">
+
+		<rich:dataTable width="400">
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText> 39 </h:outputText>
+				</f:facet>
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText> 40 </h:outputText>
+				</f:facet>
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText> 41 </h:outputText>
+				</f:facet>
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText> 42 </h:outputText>
+				</f:facet>
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText> 43 </h:outputText>
+				</f:facet>
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText> 44 </h:outputText>
+				</f:facet>
+			</rich:column>
+
+		</rich:dataTable>
+
+		<rich:dataTable width="400">
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.cantidadHombreBase39}">
+						<a:support event="onblur"
+							action="#{cargaCompra.actualizarCantidades()}" reRender="totalesHombre" />
+					</h:inputText>
+				</f:facet>
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.cantidadHombreBase40}">
+						<a:support event="onblur"
+							action="#{cargaCompra.actualizarCantidades()}" reRender="totalesHombre" />
+					</h:inputText>
+				</f:facet>
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.cantidadHombreBase41}">
+						<a:support event="onblur"
+							action="#{cargaCompra.actualizarCantidades()}" reRender="totalesHombre" />
+					</h:inputText>
+				</f:facet>
+
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.cantidadHombreBase42}">
+						<a:support event="onblur"
+							action="#{cargaCompra.actualizarCantidades()}" reRender="totalesHombre" />
+					</h:inputText>
+				</f:facet>
+
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.cantidadHombreBase43}">
+						<a:support event="onblur"
+							action="#{cargaCompra.actualizarCantidades()}" reRender="totalesHombre" />
+					</h:inputText>
+				</f:facet>
+
+			</rich:column>
+
+			<rich:column>
+				<f:facet name="header">
+					<h:inputText value="#{cargaCompra.cantidadHombreBase44}">
+						<a:support event="onblur"
+							action="#{cargaCompra.actualizarCantidades()}" reRender="totalesHombre" />
+					</h:inputText>
+				</f:facet>
+
+			</rich:column>
+
+		</rich:dataTable>
+
+		<h3>Totales</h3>
+
+		<h:panelGrid id="totalesHombre">
+
+			<rich:dataTable width="360">
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText> 39 </h:outputText>
+					</f:facet>
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText> 40 </h:outputText>
+					</f:facet>
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText> 41 </h:outputText>
+					</f:facet>
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText> 42 </h:outputText>
+					</f:facet>
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText> 43 </h:outputText>
+					</f:facet>
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText> 44 </h:outputText>
+					</f:facet>
+				</rich:column>
+
+			</rich:dataTable>
+
+			<rich:dataTable width="360">
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText value="#{cargaCompra.cantidadHombre39}" />
+					</f:facet>
+
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText value="#{cargaCompra.cantidadHombre40}" />
+					</f:facet>
+
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText value="#{cargaCompra.cantidadHombre41}" />
+					</f:facet>
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText value="#{cargaCompra.cantidadHombre42}" />
+					</f:facet>
+
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText value="#{cargaCompra.cantidadHombre43}" />
+					</f:facet>
+
+				</rich:column>
+
+				<rich:column width="60">
+					<f:facet name="header">
+						<h:outputText value="#{cargaCompra.cantidadHombre44}" />
+					</f:facet>
+
+				</rich:column>
+
+			</rich:dataTable>
+		</h:panelGrid>
+	</a:outputPanel>
+
+</ui:composition>

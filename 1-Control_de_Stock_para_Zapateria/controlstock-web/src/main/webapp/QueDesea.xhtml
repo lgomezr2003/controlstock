@@ -1,0 +1,38 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="opciones" styleClass="edit">
+
+			<rich:panel style="height:100px">
+				<f:facet name="header">Que desea hacer?</f:facet>
+
+				<h:selectOneRadio value="#{navegabilidadController.pasoSiguiente}">
+					<f:selectItem itemLabel="Deseo cargar una nueva compra" itemValue="#{cargaCompra.comenzarCargaDeCompras()}"/>
+					<f:selectItem itemLabel="Deseo generar las etiquetas de las compras realizadas" itemValue="#{generadorDeEtiquetas.comenzarSeleccion()}"/>
+					<a:support event="onblur"></a:support>
+				</h:selectOneRadio>
+				
+				<div style="height:10px"/>
+				
+				<h:commandButton value="Siguiente" action="#{navegabilidadController.getPasoSiguiente()}" >
+					<f:param name="articuloIdArticulo"/>
+				</h:commandButton> 
+				
+				<s:button value="Cancelar" view="/home.xhtml" includePageParams="false" />
+
+			</rich:panel>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

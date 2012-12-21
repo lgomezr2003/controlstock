@@ -1,0 +1,76 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tipoPago" styleClass="edit">
+
+        <rich:panel style="height:150px">
+            <f:facet name="header">#{tipoPagoHome.managed ? 'Editar' : 'Agregar'} Tipo de Pago</f:facet>
+
+            <s:decorate id="siglaField" template="layout/edit.xhtml">
+                <ui:define name="label">Sigla</ui:define>
+                <h:inputText id="sigla" value="#{tipoPagoHome.instance.sigla}" required="true"/>
+            </s:decorate>
+
+            <s:decorate id="descripcionField" template="layout/edit.xhtml">
+                <ui:define name="label">Descripcion</ui:define>
+                <h:inputText id="descripcion"
+                              value="#{tipoPagoHome.instance.descripcion}"/>
+            </s:decorate>
+
+
+            <s:decorate id="recargoField" template="layout/edit.xhtml">
+                <ui:define name="label">Recargo</ui:define>
+                <h:inputText id="recargo"
+                          value="#{tipoPagoHome.instance.recargo}"> 
+                <a:support event="onblur" reRender="recargoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+                <h:outputText> % </h:outputText>
+            </s:decorate>
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{tipoPagoHome.persist}"
+                       disabled="#{!tipoPagoHome.wired}"
+                       rendered="#{!tipoPagoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Guardar"
+                         action="#{tipoPagoHome.update}"
+                       rendered="#{tipoPagoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Borrar"
+                         action="#{tipoPagoHome.remove}"
+                      immediate="true"
+                       rendered="#{tipoPagoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/TipoPago.xhtml"
+                rendered="#{tipoPagoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty tipoPagoFrom ? 'TipoPagoList' : tipoPagoFrom}.xhtml"
+                rendered="#{!tipoPagoHome.managed}"/>
+
+        </div>
+    </h:form>
+</ui:define>
+
+</ui:composition>

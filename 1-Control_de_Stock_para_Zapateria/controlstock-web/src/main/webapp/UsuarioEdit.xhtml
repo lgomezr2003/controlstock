@@ -1,0 +1,81 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<script>
+			function Confirmar(params) {
+
+		    	this.mensaje = params.mensaje;
+		    
+		    	this.ejecutar = function() {
+		
+		        	return confirm(this.mensaje);
+			    }
+			}
+		
+			var confirmarBorrarUsuario = new Confirmar( {	mensaje : "Esta seguro que desea borrar este Usuario?" });
+		
+		</script>
+
+		<h:form id="usuario" styleClass="edit">
+
+			<rich:panel>
+				<f:facet name="header">#{usuarioHome.managed ? 'Editar' : 'Agregar'} Usuario</f:facet>
+
+				<s:decorate id="nombrePersonaField" template="layout/edit.xhtml">
+					<ui:define name="label">Nombre</ui:define>
+					<h:inputText id="nombrePersona" required="true"
+						value="#{usuarioHome.instance.nombrePersona}" />
+				</s:decorate>
+
+				<s:decorate id="apellidoPersonaField" template="layout/edit.xhtml">
+					<ui:define name="label">Apellido</ui:define>
+					<h:inputText id="apellidoPersona" required="true"
+						value="#{usuarioHome.instance.apellidoPersona}" />
+				</s:decorate>
+
+				<s:decorate id="nombreField" template="layout/edit.xhtml">
+					<ui:define name="label">Nombre de usuario</ui:define>
+					<h:inputText id="nombre" redisplay="false" autocomplete="off"
+						required="true" value="#{usuarioHome.instance.nombre}" />
+				</s:decorate>
+
+				<s:decorate id="claveField" template="layout/edit.xhtml">
+					<ui:define name="label">Clave</ui:define>
+					<h:inputSecret id="clave" required="true"
+						value="#{usuarioHome.instance.clave}" />
+				</s:decorate>
+
+				<div style="clear: both"><span class="required">*</span>
+				requerido</div>
+
+			</rich:panel>
+
+			<div class="actionButtons"><h:commandButton id="Guardar"
+				value="Guardar" action="#{usuarioHome.persist}"
+				disabled="#{!usuarioHome.wired}" rendered="#{!usuarioHome.managed}" />
+
+			<h:commandButton id="update" value="Guardar"
+				action="#{usuarioHome.update}" rendered="#{usuarioHome.managed}" />
+
+			<h:commandButton id="Borrar" value="Borrar" onclick="return confirmarBorrarUsuario.ejecutar();"
+				action="#{usuarioHome.remove}" immediate="true"
+				rendered="#{usuarioHome.managed}" /> <s:button id="CancelarEdit"
+				value="Cancelar" propagation="end" view="/Usuario.xhtml"
+				rendered="#{usuarioHome.managed}" /> <s:button id="CancelarAdd"
+				value="Cancelar" propagation="end"
+				view="/#{empty usuarioFrom ? 'UsuarioList' : usuarioFrom}.xhtml"
+				rendered="#{!usuarioHome.managed}" /></div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,123 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="compraSearch" styleClass="edit">
+
+			<rich:simpleTogglePanel label="Filtros de Busqueda" switchType="ajax">
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Fecha de compra</ui:define>
+					<rich:calendar id="fecha"
+						value="#{relacionCompraCodigoUnicoList.fechaDeCompra}"
+						enableManualInput="true" datePattern="dd/MM/yyyy">
+					</rich:calendar>
+					<ui:param name="fechaDeCompra"
+						value="#{relacionCompraCodigoUnicoList.fechaDeCompra}" />
+				</s:decorate>
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Codigo del articulo</ui:define>
+					<h:inputText
+						value="#{relacionCompraCodigoUnicoList.codigoArticulo}" />
+				</s:decorate>
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Codigo unico</ui:define>
+					<h:inputText
+						value="#{relacionCompraCodigoUnicoList.relacionCompraCodigoUnico.codigoUnico}" />
+				</s:decorate>
+			</rich:simpleTogglePanel>
+
+			<div class="actionButtons"><h:commandButton id="search"
+				value="Buscar" action="/CompraEtiquetaList.xhtml" /> <s:button
+				id="reset" value="Limpiar Busqueda" includePageParams="false" /></div>
+
+			<rich:panel style="width:600px">
+				<f:facet name="header">Resultados </f:facet>
+				<div class="results" id="etiquetasList"><h:outputText
+					value="No hay resultados que coincidan con la busqueda"
+					rendered="#{empty relacionCompraCodigoUnicoList.resultList}" /> <h:outputText
+					value="Se obtuvieron #{relacionCompraCodigoUnicoList.resultCount} resultados"
+					rendered="#{not empty relacionCompraCodigoUnicoList.resultList}" />
+
+				<s:div style="height:15px" /> <rich:dataTable
+					id="etiquetasResultList" var="_etiqueta"
+					value="#{relacionCompraCodigoUnicoList.resultList}"
+					onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+					onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+					rendered="#{not empty relacionCompraCodigoUnicoList.resultList}">
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="Fecha" />
+						</f:facet>
+						<h:outputText value="#{_etiqueta.compra.fecha}">
+							<s:convertDateTime type="both" dateStyle="short"
+								pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</rich:column>
+
+					<rich:column>
+						<f:facet name="header">
+							<f:facet name="header">
+								<h:outputText value="Codigo unico" />
+							</f:facet>
+						</f:facet>
+						<h:outputText value="#{_etiqueta.codigoUnico}">
+						</h:outputText>
+					</rich:column>
+					
+					<rich:column>
+						<f:facet name="header">
+							<f:facet name="header">
+								<h:outputText value="Accion" />
+							</f:facet>
+						</f:facet>
+					<h:outputLink id="infoLink" value="InfoCompra.seam"
+						onclick="return GB_showCenter('Informacion del articulo', this.href,  480, 400)">
+            			Ver informacion del articulo
+            			
+            			<f:param name="compraIdCompra" value="#{relacionCompraCodigoUnicoHome.obtenerCompraPorCodigoUnico(_etiqueta.codigoUnico).idCompra}" />
+            			
+					</h:outputLink>
+					</rich:column>
+
+				</rich:dataTable> <s:div style="height: 8px" />
+
+				<div class="tableControl"><s:link
+					view="/CompraEtiquetaList.xhtml"
+					rendered="#{relacionCompraCodigoUnicoList.previousExists}"
+					value="#{messages.left}#{messages.left} Primera pagina"
+					id="firstPage">
+					<f:param name="firstResult" value="0" />
+				</s:link> <s:link view="/CompraEtiquetaList.xhtml"
+					rendered="#{relacionCompraCodigoUnicoList.previousExists}"
+					value="#{messages.left} Pagina anterior" id="previousPage">
+					<f:param name="firstResult"
+						value="#{relacionCompraCodigoUnicoList.previousFirstResult}" />
+				</s:link> <s:link view="/CompraEtiquetaList.xhtml"
+					rendered="#{relacionCompraCodigoUnicoList.nextExists}"
+					value="Pagina siguiente #{messages.right}" id="nextPage">
+					<f:param name="firstResult"
+						value="#{relacionCompraCodigoUnicoList.nextFirstResult}" />
+				</s:link> <s:link view="/CompraEtiquetaList.xhtml"
+					rendered="#{relacionCompraCodigoUnicoList.nextExists}"
+					value="Ultima pagina #{messages.right}#{messages.right}"
+					id="lastPage">
+					<f:param name="firstResult"
+						value="#{relacionCompraCodigoUnicoList.lastFirstResult}" />
+				</s:link></div>
+				</div>
+
+
+			</rich:panel>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

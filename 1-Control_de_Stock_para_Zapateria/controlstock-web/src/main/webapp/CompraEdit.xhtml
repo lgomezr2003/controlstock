@@ -1,0 +1,87 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="compra" styleClass="edit">
+
+			<rich:panel style="height:170px">
+				<f:facet name="header">#{compraHome.managed ? 'Editar' : 'Agregar'} articulos comprados</f:facet>
+
+				<s:decorate id="codigoProveedorField" template="layout/edit.xhtml">
+					<ui:define name="label">Codigo de Proveedor</ui:define>
+					<h:inputText id="descripcion" size="4" readonly="true"
+						value="#{proveedorHome.codigoSeleccionado}">
+						<a:support event="onblur" reRender="codigoProveedorField"
+							bypassUpdates="true" ajaxSingle="true" />
+					</h:inputText>
+
+					<s:link value="Seleccionar de una lista"
+						view="/ProveedorList.xhtml">
+						<f:param name="from" value="CompraEdit" />
+					</s:link>
+
+				</s:decorate>
+				<s:decorate id="fechaField" template="layout/edit.xhtml">
+					<ui:define name="label">Fecha</ui:define>
+					<rich:calendar id="fecha" value="#{cargaCompra.fechaDeCarga}"
+						enableManualInput="true" datePattern="dd/MM/yyyy">
+						<a:support event="onblur" />
+					</rich:calendar>
+				</s:decorate>
+
+				<s:decorate id="opcionesArticuloField" template="layout/edit.xhtml">
+					<ui:define name="label">Articulo</ui:define>
+					<h:selectOneRadio value="#{cargaCompra.condicionArticulo}"
+						onclick="document.getElementById('compra').submit();">
+						<f:selectItem itemLabel="Quiero cargar un nuevo articulo"
+							itemValue="N" />
+						<f:selectItem
+							itemLabel="El articulo comprado ya existe en el sistema"
+							itemValue="E" />
+					</h:selectOneRadio>
+				</s:decorate>
+
+				<s:decorate id="articuloCodigoField"
+					rendered="#{cargaCompra.condicionArticulo eq 'E'}"
+					template="layout/edit.xhtml">
+					<ui:define name="label">Codigo del articulo</ui:define>
+					<h:inputText id="codigo" value="#{articuloHome.codigoSeleccionado}"
+						readonly="true">
+						<a:support event="onblur" reRender="articuloCodigoField"
+							bypassUpdates="true" ajaxSingle="true" />
+					</h:inputText>
+					<s:link value="Seleccionar de una lista" view="/ArticuloList.xhtml" rendered="#{proveedorHome.codigoSeleccionado != null and proveedorHome.codigoSeleccionado != ''}">
+						<f:param name="from" value="CompraEdit" />
+					</s:link>
+					<h:outputText rendered="#{proveedorHome.codigoSeleccionado == null or proveedorHome.codigoSeleccionado == ''}" value=" Debe seleccionar un proveedor" style="COLOR: #ff0000; FONT-WEIGHT: bold;"></h:outputText>
+				</s:decorate>
+			</rich:panel>
+			<div class="actionButtons"><s:button id="saveNuevo"
+				rendered="#{cargaCompra.condicionArticulo eq 'N'}" value="Siguiente"
+				view="/ArticuloEdit.xhtml">
+				<f:param name="articuloFrom" value="CompraEdit" />
+				<f:param name="articuloIdArticulo" />
+			</s:button> <s:button id="saveExistente"
+				rendered="#{cargaCompra.condicionArticulo eq 'E'}" value="Siguiente"
+				view="/ArticuloEdit.xhtml" style=" width : 77px;">
+				<f:param name="articuloFrom" value="CompraEdit" />
+				<f:param name="articuloIdArticulo"
+					value="#{articuloHome.instance.idArticulo}" />
+
+			</s:button> <s:button id="cancelAdd" value="Cancelar" propagation="end"
+				view="/#{empty compraFrom ? 'home' : compraFrom}.xhtml"
+				rendered="#{!compraHome.managed}" /></div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
