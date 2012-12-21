@@ -1,0 +1,112 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<style>
+.cols {
+	vertical-align: top;
+	width: 50%;
+}
+</style>
+
+		<rich:panel rendered="#{not identity.loggedIn}">
+			<h:outputText value="Por favor " />
+			<s:link value="ingrese" view="/login.xhtml" />
+			<h:outputText value=" al sistema." />
+		</rich:panel>
+		<h:form id="form" rendered="#{identity.loggedIn}">
+			<h:panelGrid columns="3" columnClasses="cols" width="100%">
+				<rich:panelMenu style="width:200px" mode="ajax"
+					iconExpandedGroup="disc" iconCollapsedGroup="disc"
+					iconExpandedTopGroup="chevronUp" iconGroupTopPosition="right"
+					iconCollapsedTopGroup="chevronDown"
+					iconCollapsedTopPosition="right">
+					<rich:panelMenuGroup label="Proveedores">
+						<rich:panelMenuItem label="Cargar proveedores"
+							action="/ProveedorEdit.xhtml">
+						</rich:panelMenuItem>
+						<rich:panelMenuItem label="Buscar proveedores"
+							action="/ProveedorList.xhtml">
+						</rich:panelMenuItem>
+					</rich:panelMenuGroup>
+					<rich:panelMenuGroup label="Stock">
+						<rich:panelMenuGroup label="Compras">
+							<rich:panelMenuItem label="Cargar compras"
+								action="#{cargaCompra.comenzarCargaDeCompras()}">
+							</rich:panelMenuItem>
+							<rich:panelMenuItem label="Buscar compras"
+								action="/CompraList.xhtml">
+							</rich:panelMenuItem>
+						</rich:panelMenuGroup>
+						<rich:panelMenuGroup label="Ventas">
+							<rich:panelMenuItem label="Cargar ventas"
+								action="#{cargaVenta.comenzarCargaDeVenta()}">
+							</rich:panelMenuItem>
+							<rich:panelMenuItem label="Buscar ventas"
+								action="/VentaList.xhtml">
+								<f:param name="ventaIdVenta" />
+							</rich:panelMenuItem>
+						</rich:panelMenuGroup>
+						<rich:panelMenuGroup label="Cambios">
+							<rich:panelMenuItem label="Efectuar cambio"
+								action="#{cargaCambio.comenzarCambio()}">
+							</rich:panelMenuItem>
+						</rich:panelMenuGroup>
+						<rich:panelMenuItem label="Reporte de Stock"
+							action="/ReportePorArticulo.xhtml">
+						</rich:panelMenuItem>
+						<rich:panelMenuItem label="Lista de precios"
+							action="/ListaDePrecios.xhtml">
+						</rich:panelMenuItem>
+					</rich:panelMenuGroup>
+					<rich:panelMenuGroup label="Etiquetas">
+						<rich:panelMenuItem label="Generar etiquetas"
+							action="#{generadorDeEtiquetas.comenzarSeleccion()}">
+						</rich:panelMenuItem>
+						<rich:panelMenuItem label="Ver etiquetas generadas"
+							action="/CompraEtiquetaList.xhtml">
+						</rich:panelMenuItem>
+					</rich:panelMenuGroup>
+				</rich:panelMenu>
+
+				<rich:panelMenu style="width:200px" mode="ajax"
+					iconExpandedGroup="disc" iconCollapsedGroup="disc"
+					iconExpandedTopGroup="chevronUp" iconGroupTopPosition="right"
+					iconCollapsedTopGroup="chevronDown"
+					iconCollapsedTopPosition="right">
+					<rich:panelMenuGroup label="Configuracion">
+						<rich:panelMenuGroup label="Datos del sistema">
+							<rich:panelMenuItem label="Tipos de Pago"
+								action="/TipoPagoList.xhtml">
+							</rich:panelMenuItem>
+							<rich:panelMenuItem label="Tipos de Venta"
+								action="/TipoVentaList.xhtml">
+							</rich:panelMenuItem>
+							<rich:panelMenuItem label="Colores de calzado"
+								action="/ColorList.xhtml">
+							</rich:panelMenuItem>
+						</rich:panelMenuGroup>
+						<rich:panelMenuGroup label="Usuarios">
+							<rich:panelMenuItem label="Nuevo usuario" action="/EnDesa.xhtml">
+							</rich:panelMenuItem>
+							<rich:panelMenuItem label="Ver usuarios"
+								action="/UsuarioList.xhtml">
+							</rich:panelMenuItem>
+						</rich:panelMenuGroup>
+					</rich:panelMenuGroup>
+
+				</rich:panelMenu>
+				<h:panelGrid width="400"></h:panelGrid>
+
+			</h:panelGrid>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

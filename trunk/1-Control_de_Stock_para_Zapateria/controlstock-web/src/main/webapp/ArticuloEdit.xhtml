@@ -1,0 +1,156 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="articulo" styleClass="edit">
+
+			<rich:panel style="height:580px">
+				<f:facet name="header">#{articuloHome.managed ? 'Editar' : 'Agregar'} Articulo</f:facet>
+
+				<s:decorate id="codigoArticuloField" template="layout/edit.xhtml">
+					<ui:define name="label">Codigo</ui:define>
+					<h:inputText id="codigoArticuloNuevo" size="5" maxlength="5"
+						rendered="#{cargaCompra.condicionArticulo == 'N'}"
+						value="#{articuloHome.instance.codigoArticulo}">
+						<f:validator validatorId="validadorDeArticuloExistente" />
+						<f:attribute name="codigoArticuloNuevo"
+							value="articulo:codigoArticuloField:codigoArticuloNuevo" />
+					</h:inputText>
+					<h:inputText id="codigoArticuloExistente" size="5" maxlength="5"
+						rendered="#{cargaCompra.condicionArticulo == 'E'}" readonly="true"
+						value="#{formateadorDeCodigos.formatearCodigo(articuloHome.instance.codigoArticulo,5)}">
+					</h:inputText>
+				</s:decorate>
+
+				<s:decorate id="descripcionField" template="layout/edit.xhtml">
+					<ui:define name="label">Descripcion</ui:define>
+					<h:inputText id="descripcion" size="60"
+						readonly="#{cargaCompra.condicionArticulo == 'E'}"
+						value="#{articuloHome.instance.descripcion}">
+						<a:support event="onblur" />
+					</h:inputText>
+				</s:decorate>
+
+				<a:outputPanel layout="block">
+
+					<s:decorate id="codigoColorField" template="layout/edit.xhtml">
+						<ui:define name="label">Color</ui:define>
+						<h:inputText id="codigoNuevo" size="4" readonly="true"
+							value="#{colorHome.codigoSeleccionado}">
+						</h:inputText>
+
+						<h:outputText id="nombreColor"
+							value=" #{colorHome.instance.nombre}" />
+
+						<s:link value=" Seleccionar de una lista" view="/ColorList.xhtml">
+							<f:param name="from" value="ArticuloEdit" />
+						</s:link>
+					</s:decorate>
+
+				</a:outputPanel>
+
+				<s:decorate id="codigoProveedorField" template="layout/edit.xhtml">
+					<ui:define name="label">Codigo de Proveedor</ui:define>
+					<h:inputText id="codigo" size="4" readonly="true"
+						value="#{proveedorHome.codigoSeleccionado}">
+					</h:inputText>
+				</s:decorate>
+
+				<s:decorate id="tipoField" template="layout/edit.xhtml">
+					<ui:define name="label">Tipo</ui:define>
+					<h:selectOneMenu value="#{articuloHome.instance.tipoArticulo}"
+						onchange="document.getElementById('articulo').submit();"
+						readonly="#{cargaCompra.condicionArticulo == 'E'}">
+						<f:selectItems value="#{articuloHome.itemsParaTipoDeCalzado}" />
+					</h:selectOneMenu>
+				</s:decorate>
+
+
+				<s:decorate id="costoUnitarioField" template="layout/edit.xhtml">
+					<ui:define name="label">Costo unitario (por par) $</ui:define>
+					<h:inputText id="costoUnitario" size="7"
+						value="#{cargaCompra.costoUnitarioSeleccionado}" >
+						<a:support event="onblur" />
+						</h:inputText>
+				</s:decorate>
+
+				<s:decorate id="precioDeVentaPorMenorField"
+					template="layout/edit.xhtml">
+					<ui:define name="label">Precio de venta por menor $</ui:define>
+					<h:inputText id="precioDeVenta"
+						value="#{cargaCompra.precioDeVentaSeleccionado}">
+						<a:support event="onblur" reRender="valorField"
+							bypassUpdates="true" ajaxSingle="true" />
+					</h:inputText>
+				</s:decorate>
+
+				<s:decorate id="precioDeVentarPorMayoField" rendered="false"
+					template="layout/edit.xhtml">
+					<ui:define name="label">Precio de venta por mayor $</ui:define>
+					<h:inputText id="precioDeVentaPorMayor"
+						value="#{cargaCompra.precioDeVentaSeleccionadoPorMayor}">
+						<a:support event="onblur" reRender="valorField"
+							bypassUpdates="true" ajaxSingle="true" />
+					</h:inputText>
+				</s:decorate>
+
+				<a:outputPanel layout="block">
+					<s:decorate id="cantidadDeTareasField" template="layout/edit.xhtml">
+						<ui:define name="label">Defina la tarea:</ui:define>
+						<h:panelGrid id="tareas">
+							<h:panelGrid id="tareaHombre"
+								rendered="#{articuloHome.instance.tipoArticulo == 'CALZADO_HOMBRE'}">
+
+								<ui:include src="/TareaHombreEdit.xhtml" />
+							</h:panelGrid>
+
+							<h:panelGrid id="tareaMujer"
+								rendered="#{articuloHome.instance.tipoArticulo == 'CALZADO_MUJER'}">
+
+								<ui:include src="/TareaMujerEdit.xhtml" />
+
+							</h:panelGrid>
+
+							<h:panelGrid id="tareaNinio"
+								rendered="#{articuloHome.instance.tipoArticulo == 'CALZADO_NINIO'}">
+
+								<ui:include src="/TareaNinoEdit.xhtml" />
+
+							</h:panelGrid>
+						</h:panelGrid>
+
+						<h:panelGrid>
+							<h:outputText>Cantidad de Tareas:</h:outputText>
+							<h:inputText id="cantidadDeTareas" size="3"
+								value="#{cargaCompra.cantidadDeTareas}">
+
+								<a:support event="onblur"
+									action="#{cargaCompra.actualizarCantidades()}"
+									reRender="tareas" />
+
+							</h:inputText>
+						</h:panelGrid>
+					</s:decorate>
+				</a:outputPanel>
+
+				<s:div style="height:15px" />
+			</rich:panel>
+
+			<div class="actionButtons"><h:commandButton id="guardar"
+				value="Guardar" action="#{cargaCompra.guardarCompra()}">
+
+				<f:param name="precioFrom" value="/ArticuloEdit" />
+			</h:commandButton> <s:button id="cancelar" value="Cancelar" view="/CompraEdit.xhtml" /></div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

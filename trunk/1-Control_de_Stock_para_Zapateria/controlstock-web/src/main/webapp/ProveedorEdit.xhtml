@@ -1,0 +1,85 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<script>
+			function Confirmar(params) {
+
+		    	this.mensaje = params.mensaje;
+		    
+		    	this.ejecutar = function() {
+		
+		        	return confirm(this.mensaje);
+			    }
+			}
+		
+			var confirmarBorrarProveedor = new Confirmar( {	mensaje : "Esta seguro que desea borrar este Proveedor?" });
+		
+		</script>
+
+		<h:form id="proveedor" styleClass="edit">
+
+			<rich:panel>
+				<f:facet name="header">#{proveedorHome.managed ? 'Editar' : 'Agregar'} Proveedor</f:facet>
+
+				<s:decorate id="codigoFabricanteField" template="layout/edit.xhtml">
+					<ui:define name="label">Codigo fabricante</ui:define>
+					<h:inputText id="codigoFabricante" size="4" maxlength="4"
+						readonly="true" value="#{proveedorHome.instance.codigoFabricante}">
+						<a:support event="onblur" reRender="codigoFabricanteField"
+							bypassUpdates="true" ajaxSingle="true" />
+					</h:inputText>
+				</s:decorate>
+
+
+				<s:decorate id="direccionField" template="layout/edit.xhtml">
+					<ui:define name="label">Direccion</ui:define>
+					<h:inputText id="direccion" size="60"
+						value="#{proveedorHome.instance.direccion}" />
+				</s:decorate>
+
+
+				<s:decorate id="nombreField" template="layout/edit.xhtml">
+					<ui:define name="label">Nombre</ui:define>
+					<h:inputText id="nombre" size="30"
+						value="#{proveedorHome.instance.nombre}" />
+				</s:decorate>
+
+
+				<s:decorate id="telefonoField" template="layout/edit.xhtml">
+					<ui:define name="label">Telefono</ui:define>
+					<h:inputText id="telefono" size="15"
+						value="#{proveedorHome.instance.telefono}" />
+				</s:decorate>
+
+				<div style="clear: both"><span class="required">*</span>
+				requerido</div>
+
+			</rich:panel>
+
+			<div class="actionButtons"><h:commandButton id="save"
+				value="Guardar" action="#{proveedorHome.persist}"
+				disabled="#{!proveedorHome.wired}"
+				rendered="#{!proveedorHome.managed}" /> <h:commandButton id="update"
+				value="Guardar" action="#{proveedorHome.update}"
+				rendered="#{proveedorHome.managed}" /> <h:commandButton id="delete" onclick="return confirmarBorrarProveedor.ejecutar();"
+				value="Borrar" action="#{proveedorHome.remove}" immediate="true"
+				rendered="#{proveedorHome.managed}" /> <s:button id="cancelEdit"
+				value="Cancelar" propagation="end" view="/ProveedorList.xhtml"
+				rendered="#{proveedorHome.managed}" /> <s:button id="cancelAdd"
+				value="Cancelar" propagation="end"
+				view="/#{empty proveedorFrom ? 'ProveedorList' : proveedorFrom}.xhtml"
+				rendered="#{!proveedorHome.managed}" /></div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

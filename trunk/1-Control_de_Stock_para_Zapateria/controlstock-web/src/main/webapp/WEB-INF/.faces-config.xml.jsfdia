@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::0" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="LISTA_COMPRAS::#CompraList.xhtml"
+    NAME="output" PATH="/CompraList.xhtml"
+    TARGET="rules:#CompraList.xhtml" TITLE="LISTA_COMPRAS" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#CompraList.xhtml" PATH="/CompraList.xhtml"
+  SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::1" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::1" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="LISTA_VENTAS::#VentaList.xhtml"
+    NAME="output" PATH="/VentaList.xhtml"
+    TARGET="rules:#VentaList.xhtml" TITLE="LISTA_VENTAS" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#CompraEdit.xhtml" PATH="/CompraEdit.xhtml"
+  SHAPE="240,145,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::2" SHAPE="32,241,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::2" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="LISTA_ETIQUETAS::#CompraEtiquetaList.xhtml"
+    NAME="output" PATH="/CompraEtiquetaList.xhtml"
+    TARGET="rules:#CompraEtiquetaList.xhtml" TITLE="LISTA_ETIQUETAS" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#Venta.xhtml" PATH="/Venta.xhtml"
+  SHAPE="240,257,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::3" SHAPE="32,353,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::3" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="CARGA_COMPRAS::#CompraEdit.xhtml"
+    NAME="output" PATH="/CompraEdit.xhtml"
+    TARGET="rules:#CompraEdit.xhtml" TITLE="CARGA_COMPRAS" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#Cambio.xhtml" PATH="/Cambio.xhtml"
+  SHAPE="240,369,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::4" SHAPE="32,465,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::4" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="CARGA_PRECIOS::#PrecioEdit.xhtml"
+    NAME="output" PATH="/PrecioEdit.xhtml"
+    TARGET="rules:#PrecioEdit.xhtml" TITLE="CARGA_PRECIOS" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#VentaEdit.xhtml" PATH="/VentaEdit.xhtml"
+  SHAPE="240,481,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#VentaEdit.xhtml:0" NAME="item"
+   PATH="/VentaEdit.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="QUE_DESEA::#QueDesea_Venta.xhtml"
+    NAME="output" PATH="/QueDesea_Venta.xhtml"
+    TARGET="rules:#QueDesea_Venta.xhtml" TITLE="QUE_DESEA" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::5" SHAPE="32,577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::5" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="CARGA_VENTA::#VentaEdit.xhtml" NAME="output"
+    PATH="/VentaEdit.xhtml" TARGET="rules:#VentaEdit.xhtml"
+    TITLE="CARGA_VENTA" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#CompraEtiquetaList.xhtml"
+  PATH="/CompraEtiquetaList.xhtml" SHAPE="240,593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::6" SHAPE="32,801,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::6" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="VER_VENTA::#Venta.xhtml" NAME="output"
+    PATH="/Venta.xhtml" TARGET="rules:#Venta.xhtml" TITLE="VER_VENTA" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#PrecioEdit.xhtml" PATH="/PrecioEdit.xhtml"
+  SHAPE="240,705,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#ArticuloEdit.xhtml"
+  PATH="/ArticuloEdit.xhtml" SHAPE="32,577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#ArticuloEdit.xhtml:0" NAME="item"
+   PATH="/ArticuloEdit.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="EXITO::#QueDesea.xhtml" NAME="output"
+    PATH="/QueDesea.xhtml" TARGET="rules:#QueDesea.xhtml" TITLE="EXITO" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#QueDesea.xhtml" PATH="/QueDesea.xhtml"
+  SHAPE="240,817,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#QueDesea_Venta.xhtml"
+  PATH="/QueDesea_Venta.xhtml" SHAPE="448,913,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::7" SHAPE="32,913,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::7" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="CARGA_CAMBIO::#Cambio.xhtml" NAME="output"
+    PATH="/Cambio.xhtml" TARGET="rules:#Cambio.xhtml"
+    TITLE="CARGA_CAMBIO" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#VentaList.xhtml" PATH="/VentaList.xhtml"
+  SHAPE="240,929,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::8" SHAPE="32,913,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::8" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="CONFIRMAR_CAMBIO::#ConfirmarCambio.xhtml"
+    NAME="output" PATH="/ConfirmarCambio.xhtml"
+    TARGET="rules:#ConfirmarCambio.xhtml" TITLE="CONFIRMAR_CAMBIO" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#ConfirmarCambio.xhtml"
+  PATH="/ConfirmarCambio.xhtml" SHAPE="240,1041,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

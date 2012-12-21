@@ -1,0 +1,67 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="precio" styleClass="edit">
+
+			<rich:panel>
+				<f:facet name="header">#{precioHome.managed ? 'Editar' : 'Agregar'} precio de venta para articulo</f:facet>
+
+				<s:decorate id="articuloCodigoField" template="layout/edit.xhtml">
+					<ui:define name="label">Codigo del articulo</ui:define>
+					<h:inputText id="codigo" value="#{articuloHome.codigoSeleccionado}"
+						readonly="true" required="true">
+						<a:support event="onblur" reRender="articuloCodigoField"
+							bypassUpdates="true" ajaxSingle="true" />
+					</h:inputText>
+					<s:link value="Seleccionar de una lista" view="/ArticuloList.xhtml">
+						<f:param name="from" value="PrecioEdit" />
+					</s:link>
+				</s:decorate>
+
+				<s:decorate id="tipoArticuloField" template="layout/edit.xhtml">
+					<ui:define name="label">Tipo</ui:define>
+					<h:outputText
+						value="#{articuloHome.instance.tipoArticulo}" />
+				</s:decorate>
+
+				<s:decorate id="valorField" template="layout/edit.xhtml">
+					<ui:define name="label">Valor $</ui:define>
+					<h:inputText id="valor" required="true"
+						value="#{articuloHome.instance.precioDeVenta}">
+						<a:support event="onblur" reRender="valorField"
+							bypassUpdates="true" ajaxSingle="true" />
+					</h:inputText>
+				</s:decorate>
+
+				<div style="clear: both"><span class="required">*</span>
+				required fields</div>
+
+			</rich:panel>
+
+			<div class="actionButtons"><h:commandButton id="save"
+				value="Guardar" action="#{articuloHome.update}"
+				disabled="#{!articuloHome.wired}" rendered="#{!articuloHome.managed}" />
+
+			<h:commandButton id="update" value="Guardar"
+				action="#{articuloHome.update}" rendered="#{articuloHome.managed}" /> <h:commandButton
+				id="delete" value="Borrar" action="#{articuloHome.remove}"
+				immediate="true" rendered="false" /> <s:button id="cancelEdit"
+				value="Cancelar" propagation="end" view="/PrecioList.xhtml"
+				rendered="#{articuloHome.managed}" /> <s:button id="cancelAdd"
+				value="Cancelar" propagation="end"
+				view="/#{empty precioFrom ? 'PrecioList' : precioFrom}.xhtml"
+				rendered="#{!articuloHome.managed}" /></div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

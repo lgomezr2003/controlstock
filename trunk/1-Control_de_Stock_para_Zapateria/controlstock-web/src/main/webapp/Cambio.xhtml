@@ -1,0 +1,36 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="cambio">
+
+			<rich:panel style="height:100px">
+				<f:facet name="header">Comenzar cambio:</f:facet>
+
+				<s:decorate id="CodigoField" template="layout/edit.xhtml">
+					<ui:define name="label">Ingrese el codigo del articulo a cambiar</ui:define>
+					<h:inputText id="codigoDeArticulo"
+						value="#{cargaCambio.codigoAValidar}" required="true">
+						<f:validator validatorId="validadorDeArticuloVendido" />
+						<f:validator validatorId="validadorDeCodigoInexistente" />
+						<f:attribute name="codigoDeArticuloId"
+							value="cambio:CodigoField:codigoDeArticulo" />
+					</h:inputText>
+				</s:decorate>
+
+			</rich:panel>
+			<s:div style="height:10px"></s:div>
+			<div class="actionButtons"><h:commandButton value="Aceptar"
+				action="#{cargaCambio.validarCodigo()}"></h:commandButton></div>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

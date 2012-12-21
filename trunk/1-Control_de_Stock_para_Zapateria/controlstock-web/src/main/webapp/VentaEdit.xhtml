@@ -1,0 +1,171 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<script>
+			function Confirmar(params) {
+
+		    	this.mensaje = params.mensaje;
+		    
+		    	this.ejecutar = function() {
+		
+		        	return confirm(this.mensaje);
+			    }
+			}
+		
+			var confirmarBorrarVenta = new Confirmar( {	mensaje : "Esta seguro que desea remover esta Venta?" });
+		
+		</script>
+		
+		<h:form id="venta">
+			<rich:panel>
+				<f:facet name="header">Tipo de venta</f:facet>
+
+				<h:selectOneRadio value="#{selectorTipoDeVenta.idTipoVentaSeleccionado}" required="true" id="tipoVentaSelection">
+					<f:selectItems value="#{tipoVentaHome.itemsParaTipoVenta}" />
+				</h:selectOneRadio>
+
+			</rich:panel>
+		
+			<s:div style="height:8px" />
+
+			<rich:panel style="height:270px; width : 850px;">
+				<rich:panel style="height:220px; width : 800px;">
+					<f:facet name="header">#{ventaHome.managed ? 'Editar' : 'Nueva'} Venta</f:facet>
+
+					<s:decorate id="codigoField" template="layout/edit.xhtml">
+						<ui:define name="label">Codigo Unico</ui:define>
+						<h:inputText id="codigoDeArticulo" value="#{cargaVenta.codigoUnico}">
+							<f:validator validatorId="validadorDeArticuloNoVendido" />
+							<f:validator validatorId="validadorDeCodigoInexistente" />
+							<f:attribute name="codigoDeArticuloId" value="venta:codigoField:codigoDeArticulo"/>
+							<a:support event="onblur" ajaxSingle="true" reRender="precioDeVentaPanel,botonesPanel,codigoField"/>
+						</h:inputText>
+					</s:decorate>
+
+					<s:decorate id="fechaField" template="layout/edit.xhtml" rendered="false">
+						<ui:define name="label">Fecha</ui:define>
+						<rich:calendar id="fecha" value="#{ventaHome.instance.fecha}"
+							datePattern="dd/MM/yyyy" />
+					</s:decorate>
+					
+					<a:outputPanel id="precioDeVentaPanel">
+						<s:decorate id="precioDeVentaField" template="layout/edit.xhtml">
+							<ui:define name="label">Precio de venta</ui:define>
+							<h:outputText value="$" />
+							<h:outputText id="precioDeVenta" readonly="true" size="10"
+								rendered="#{cargaVenta.compraSeleccionada.precioDeVenta != null}"
+								value="#{cargaVenta.compraSeleccionada.precioDeVenta}" />
+						</s:decorate>
+					</a:outputPanel>
+
+					<s:decorate template="layout/edit.xhtml">
+						<ui:define name="label">Opciones</ui:define>
+
+							<h:commandButton value="Modificar precio manualmente" action="#{cargaVenta.modificarPrecioOriginal()}">
+								<a:support event="onclick" ajaxSingle="true" reRender="modificacion" />
+							</h:commandButton>
+							
+							<a:outputPanel id="modificacion">
+								<h:outputText value="$ " rendered="#{cargaVenta.modificandoPrecioOriginal}"/>
+								<h:inputText
+									value="#{ventaHome.instance.precioDeVentaModificado}" size="5"
+									rendered="#{cargaVenta.modificandoPrecioOriginal}" />
+								<h:commandLink value="Cancelar"
+									rendered="#{cargaVenta.modificandoPrecioOriginal}">
+									<a:support event="onclick"
+										action="#{cargaVenta.cancelarModificarPrecio()}"
+										reRender="modificacion" />
+								</h:commandLink>
+								<br />
+								<h:outputText value="Descuento"
+									rendered="#{not cargaVenta.modificandoPrecioOriginal and false}" />
+								<h:inputText id="descuento"
+									rendered="#{not cargaVenta.modificandoPrecioOriginal and false}"
+									value="#{ventaHome.instance.descuento}">
+								</h:inputText>
+								<h:outputText value="%"
+									rendered="#{not cargaVenta.modificandoPrecioOriginal and false}" />
+							</a:outputPanel>
+					</s:decorate>
+
+				</rich:panel>
+				<a:outputPanel id="botonesPanel">
+					<div class="actionButtons"><h:commandButton id="guardar"
+						value="Guardar" action="#{cargaVenta.guardarVenta()}"
+						disabled="#{!ventaHome.wired}"
+						rendered="#{!ventaHome.managed and not cargaVenta.compraSeleccionada.vendida and cargaVenta.compraSeleccionada != null }" />
+					</div>
+				</a:outputPanel>
+
+			</rich:panel>
+
+			<s:div style="height:10px" />
+
+			<rich:panel style= "width : 800px;">
+				<f:facet name="header">Ventas cargadas</f:facet>
+
+				<h:outputText value="Todavia no hay ninguna venta cargada"
+					style="FONT-WEIGHT: bold; COLOR: #ff0000;"
+					rendered="#{empty cargaVenta.ventasACargar}" />
+
+				<h:panelGrid rendered="#{not empty cargaVenta.ventasACargar}">
+					<rich:dataTable id="ventasCargadas" var="_venta"
+						value="#{cargaVenta.ventasACargar}">
+
+						<rich:column>
+							<f:facet name="header">Codigo</f:facet>
+							<h:outputText
+								value="#{relacionCompraCodigoUnicoHome.obtenerCodigoUnicoParaCompra(_venta.compra)}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">Articulo</f:facet>
+							<h:outputText value="#{_venta.compra.articulo.descripcion}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">Numero</f:facet>
+							<h:outputText value="#{_venta.compra.numero}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">Precio</f:facet>
+							<h:outputText value="$ #{cargaVenta.obtenerPrecioCalculadoParaVenta(_venta)}" />
+						</rich:column>
+
+						<rich:column>
+							<f:facet name="header">Accion</f:facet>
+							<h:commandLink value="Remover"
+								onclick="return confirmarBorrarVenta.ejecutar();"
+								action="#{cargaVenta.removerVenta(_venta)}" />
+						</rich:column>
+
+					</rich:dataTable>
+
+					<s:div style="height:8px" />
+
+					<h:outputText value="Subtotal: $ #{cargaVenta.subtotal}"></h:outputText>
+
+					<s:div style="height:8px" />
+
+					<s:button value="Confirmar y elegir tipo de pago"
+						view="/ConfirmarVenta.xhtml" />
+
+				</h:panelGrid>
+
+			</rich:panel>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

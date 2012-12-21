@@ -1,0 +1,74 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:form id="tipoVenta" styleClass="edit">
+
+			<rich:panel style="height:400px">
+				<f:facet name="header">#{tipoVentaHome.managed ? 'Editar' : 'Agregar'} Tipo de Venta</f:facet>
+
+				<s:decorate id="descripcionField" template="layout/edit.xhtml">
+					<ui:define name="label">Descripcion</ui:define>
+					<h:inputText id="descripcion"
+						value="#{tipoVentaHome.instance.descripcion}" />
+				</s:decorate>
+
+				<s:decorate id="descuentoField" template="layout/edit.xhtml">
+					<ui:define name="label">Descuento</ui:define>
+					<h:inputText id="descuento"
+						value="#{tipoVentaHome.instance.porcentajeDescuento}">
+						<a:support event="onblur" reRender="recargoField"
+							bypassUpdates="true" ajaxSingle="true" />
+					</h:inputText>
+					<h:outputText> % </h:outputText>
+				</s:decorate>
+
+				<s:decorate id="minimoField" template="layout/edit.xhtml">
+					<ui:define name="label">Cantidad minima de articulos a vender</ui:define>
+					<h:inputText id="minimo"
+						value="#{tipoVentaHome.instance.minimoDeArticulosVendidos}">
+					</h:inputText>
+				</s:decorate>
+
+				<s:decorate id="aceptaCambiosField" template="layout/edit.xhtml">
+					<ui:define name="label">Marque si acepta cambios</ui:define>
+					<h:selectBooleanCheckbox
+						value="#{tipoVentaHome.instance.aceptaCambios}">
+					</h:selectBooleanCheckbox>
+				</s:decorate>
+
+				<s:decorate id="tiposDePagoField" template="layout/edit.xhtml">
+					<ui:define name="label">Seleccione los tipos de pago aceptados</ui:define>
+					<rich:pickList value="#{tipoVentaHome.idsTiposDePagoSeleccionados}"
+						required="true">
+						<f:selectItems value="#{tipoPagoHome.itemsParaTipoPago}" />
+					</rich:pickList>
+				</s:decorate>
+
+			</rich:panel>
+
+			<div class="actionButtons"><h:commandButton id="save"
+				value="Guardar" action="#{tipoVentaHome.persist}"
+				disabled="#{!tipoVentaHome.wired}"
+				rendered="#{!tipoVentaHome.managed}" /> <h:commandButton
+				id="update" value="Guardar" action="#{tipoVentaHome.update}"
+				rendered="#{tipoVentaHome.managed}" /> <h:commandButton id="delete"
+				value="Borrar" action="#{tipoVentaHome.remove}" immediate="true"
+				rendered="#{tipoVentaHome.managed and false}" /> <s:button id="cancelEdit"
+				value="Cancelar" propagation="end" view="/TipoVenta.xhtml"
+				rendered="#{tipoVentaHome.managed}" /> <s:button id="cancelAdd"
+				value="Cancelar" propagation="end"
+				view="/#{empty tipoVentaFrom ? 'TipoVentaList' : tipoVentaFrom}.xhtml"
+				rendered="#{!tipoVentaHome.managed}" /></div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
