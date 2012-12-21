@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ar.com.pitasi.zapateria.controlstock</groupId>
+	<artifactId>controlstock-app</artifactId>
+	<packaging>ear</packaging>
+	<version>1.0.0</version>
+
+	<name>Sistema para control de stock ear</name>
+	<description>.</description>
+
+	<parent>
+		<groupId>ar.com.pitasi.zapateria.controlstock</groupId>
+		<artifactId>controlstock-project</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<configuration>
+					<display-name>Sistema para control de stock</display-name>
+					<generateApplicationXml>true</generateApplicationXml>
+
+					<jboss>
+						<version>4</version>
+						<loader-repository>
+							seam.jboss.org:loader=controlstock
+                        </loader-repository>
+					</jboss>
+
+					<modules>
+
+						<webModule>
+							<groupId>ar.com.pitasi.zapateria.controlstock
+							</groupId>
+							<artifactId>controlstock-web</artifactId>
+							<contextRoot>/controlstock</contextRoot>
+						</webModule>
+
+						<jarModule>
+							<groupId>ar.com.pitasi.zapateria.controlstock
+							</groupId>
+							<artifactId>controlstock-modelo</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+
+						<jarModule>
+							<groupId>org.jboss.seam</groupId>
+							<artifactId>jboss-seam</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+
+						<jarModule>
+							<groupId>org.jboss.el</groupId>
+							<artifactId>jboss-el</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+
+						<jarModule>
+							<groupId>ar.com.pitasi.zapateria.controlstock</groupId>
+							<artifactId>controlstock-ui</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>development</id>
+			<properties>
+				<jboss.home>C:/jboss-4.2.3.GA/server/default</jboss.home>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<version>0.3</version>
+						<configuration>
+							<container>
+								<containerId>jboss4x</containerId>
+								<home>${jboss.home}</home>
+								<type>installed</type>
+							</container>
+
+							<configuration>
+								<type>existing</type>
+								<home>${jboss.home}</home>
+							</configuration>
+
+							<deployer>
+								<type>installed</type>
+								<deployables>
+									<deployable>
+										<groupId>
+											${project.groupId}
+                                        </groupId>
+										<artifactId>
+											${project.artifactId}
+                                        </artifactId>
+										<type>${project.type}</type>
+									</deployable>
+								</deployables>
+							</deployer>
+						</configuration>
+
+						<executions>
+							<execution>
+								<id>deploy</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.jboss.seam</groupId>
+			<artifactId>jboss-seam</artifactId>
+			<version>2.1.1.GA</version>
+			<scope>runtime</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.el</groupId>
+					<artifactId>el-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.jboss.el</groupId>
+					<artifactId>jboss-el</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.el</groupId>
+			<artifactId>jboss-el</artifactId>
+			<version>2.0.2.CR1</version>
+		</dependency>
+		<dependency>
+			<groupId>ar.com.pitasi.zapateria.controlstock</groupId>
+			<artifactId>controlstock-web</artifactId>
+			<type>war</type>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>ar.com.pitasi.zapateria.controlstock</groupId>
+			<artifactId>controlstock-modelo</artifactId>
+			<version>1.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-validator</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.persistence</groupId>
+					<artifactId>persistence-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>ar.com.pitasi.zapateria.controlstock</groupId>
+			<artifactId>controlstock-ui</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
+</project>

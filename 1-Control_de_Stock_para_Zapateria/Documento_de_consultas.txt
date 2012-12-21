@@ -1,0 +1,20 @@
+Generales:
+1) ¿Cuál es el nombre del Local?
+2) ¿Hay algún logo?
+
+Proveedores:
+
+El Código de Fabricante,
+1) ¿lo cargás vos o se genera automáticamente?
+2) ¿tiene que ser obligatoriamente de 4 dígitos o de hasta 4 dígitos? Ejemplo: ¿el código 1 puede existir o tiene que ser 0001?
+
+Articulo:
+1) El codigo lo cargas vos o se genera automaticamente?
+2) El mismo articulo puede ser comprado a dos proveedores distintos o en ese caso el numero de articulo cambia?
+
+Compras:
+1) La fecha se carga? O es por defecto la fecha de hoy?
+
+Tarea:
+1) ¿Hay Tarea para el tipo de calzado niños?
+2) ¿Hay posibilidades de que la tarea cambie?
