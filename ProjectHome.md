@@ -1,0 +1,1 @@
+Control de stock para zapaterías
